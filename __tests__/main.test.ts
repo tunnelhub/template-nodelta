@@ -1,7 +1,7 @@
 import { mocked } from 'ts-jest/utils';
 import * as main from '../src';
 import * as ftp from "basic-ftp";
-import { NoDeltaIntegrationFlow } from "@4success/tunnelhub-sdk/classes/flows/noDeltaIntegrationFlow";
+import { NoDeltaIntegrationFlow } from "@4success/tunnelhub-sdk/src/classes/flows/noDeltaIntegrationFlow";
 import got from 'got';
 
 jest.mock('basic-ftp');

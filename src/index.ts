@@ -1,5 +1,5 @@
 import { AutomationExecution, IntegrationMessageReturn, Metadata } from "@4success/tunnelhub-sdk";
-import { NoDeltaIntegrationFlow } from "@4success/tunnelhub-sdk/classes/flows/noDeltaIntegrationFlow";
+import { NoDeltaIntegrationFlow } from "@4success/tunnelhub-sdk/src/classes/flows/noDeltaIntegrationFlow";
 import { ProxyResult } from "aws-lambda";
 import got from 'got';
 import {Parser} from 'json2csv';
@@ -116,13 +116,15 @@ class Integration extends NoDeltaIntegrationFlow {
             if (state === 'All') {
                 continue;
             }
-            sourceSystemData.push({
-                stateName: state,
-                confirmed: covidCases[state].confirmed,
-                recovered: covidCases[state].recovered,
-                deaths: covidCases[state].deaths,
-                updated: covidCases[state].updated
-            });
+            if (covidCases.hasOwnProperty(state)){
+                sourceSystemData.push({
+                    stateName: state,
+                    confirmed: covidCases[state].confirmed,
+                    recovered: covidCases[state].recovered,
+                    deaths: covidCases[state].deaths,
+                    updated: covidCases[state].updated
+                });
+            }
         }
 
         return sourceSystemData
