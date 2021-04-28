@@ -1,8 +1,10 @@
 import { mocked } from 'ts-jest/utils';
 import * as main from '../src';
-import * as ftp from "basic-ftp";
-import { NoDeltaIntegrationFlow } from "@4success/tunnelhub-sdk/src/classes/flows/noDeltaIntegrationFlow";
+import * as ftp from 'basic-ftp';
+import { NoDeltaIntegrationFlow } from '@4success/tunnelhub-sdk/src/classes/flows/noDeltaIntegrationFlow';
 import got from 'got';
+import { AutomationExecution } from '@4success/tunnelhub-sdk';
+import AutomationLog from '@4success/tunnelhub-sdk/src/classes/logs/automationLog';
 
 jest.mock('basic-ftp');
 jest.mock('got');
@@ -11,50 +13,62 @@ const mockedFtp = mocked(ftp, true);
 const mockedGot = mocked(got, true);
 
 beforeAll(() => {
-    /**
-     * The code bellow is ** mandatory ** to avoid TunnelHub SDK make external calls trying persist logs
-     * You can make this mock using the same code with any IntegrationFlow at @4success/tunnelhub-sdk/classes/flows 
-     */
-    const persistLogsFunc = jest.spyOn(NoDeltaIntegrationFlow.prototype as any, 'persistLogs');
-    persistLogsFunc.mockImplementation(() => {});
 
-    const updateExecutionStatisticsFunc = jest.spyOn(NoDeltaIntegrationFlow.prototype as any, 'updateExecutionStatistics');
-    updateExecutionStatisticsFunc.mockImplementation(() => {});
+  /**
+   * The code bellow is ** mandatory ** to avoid TunnelHub SDK make external calls trying persist logs
+   * You can make this mock using the same code with any IntegrationFlow at @4success/tunnelhub-sdk/classes/flows
+   */
+  const persistLambdaContextFunc = jest.spyOn(AutomationExecution as any, 'persistLambdaContext');
+  persistLambdaContextFunc.mockImplementation(() => {
+  });
+
+  const persistLogsFunc = jest.spyOn(AutomationLog.prototype as any, 'save');
+  persistLogsFunc.mockImplementation(() => {
+  });
+
+
+  const updateExecutionStatisticsFunc = jest.spyOn(NoDeltaIntegrationFlow.prototype as any, 'updateExecutionStatistics');
+  updateExecutionStatisticsFunc.mockImplementation(() => {
+  });
+
+  const updateMetadata = jest.spyOn(NoDeltaIntegrationFlow.prototype as any, 'updateMetadata');
+  updateMetadata.mockImplementation(() => {
+  });
 });
 
 
 test('testMyIntegration', async () => {
-    /***
-     * Mocking basic-ftp class and got
-     */
-    //@ts-ignore - is not necessary return all methods
-    mockedFtp.Client.mockImplementation(() => {
-        return {
-            access(options) {
-                //@ts-ignore
-                return new Promise(resolve => resolve({}));
-            },
-            uploadFrom(source, toRemotePath, options) {
-                return new Promise(resolve => {
-                    //@ts-ignore
-                    resolve({});
-                })
-            },
-            close() {
-            }
-        }
-    })
-    
-    //@ts-ignore - is not necessary return all methods
-    mockedGot.mockReturnValue({body: JSON.stringify(require('./data/covidCases.json'))});
+  /***
+   * Mocking basic-ftp class and got
+   */
+  //@ts-ignore - is not necessary return all methods
+  mockedFtp.Client.mockImplementation(() => {
+    return {
+      access(options) {
+        //@ts-ignore
+        return new Promise(resolve => resolve({}));
+      },
+      uploadFrom(source, toRemotePath, options) {
+        return new Promise(resolve => {
+          //@ts-ignore
+          resolve({});
+        });
+      },
+      close() {
+      },
+    };
+  });
 
-    /**
-     * Calling my function
-     */
-    const response = await main.handler({});
-    
-    expect(response.statusCode).toEqual(200);
-    expect(typeof response.body).toBe("string");
+  //@ts-ignore - is not necessary return all methods
+  mockedGot.mockReturnValue({ body: JSON.stringify(require('./data/covidCases.json')) });
 
-    expect(response.body).toEqual('Automation executed with no errors!');
+  /**
+   * Calling my function
+   */
+  const response = await main.handler({}, {});
+
+  expect(response.statusCode).toEqual(200);
+  expect(typeof response.body).toBe('string');
+
+  expect(response.body).toEqual('Automation executed with no errors!');
 });
