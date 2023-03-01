@@ -1,6 +1,6 @@
-import { NoDeltaIntegrationFlow } from '@4success/tunnelhub-sdk/src/classes/flows/noDeltaIntegrationFlow';
-import { GenericParameter, IntegrationMessageReturn, Metadata } from '@4success/tunnelhub-sdk';
-import { TunnelHubSystem } from '@4success/tunnelhub-sdk/src/types/data';
+import { NoDeltaIntegrationFlow } from '@tunnelhub/sdk/src/classes/flows/noDeltaIntegrationFlow';
+import { GenericParameter, IntegrationMessageReturn, Metadata } from '@tunnelhub/sdk';
+import { TunnelHubSystem } from '@tunnelhub/sdk/src/types/data';
 import { IntegrationModel } from '../data';
 
 export default class Integration extends NoDeltaIntegrationFlow {
