@@ -28,6 +28,9 @@ switch (tunnelhubConfig.configuration.runtime) {
   case 'nodejs18.x':
     targetNodeVersion = 'node18';
     break;
+  case 'nodejs20.x':
+    targetNodeVersion = 'node20';
+    break;
 }
 
 require('esbuild').build({
