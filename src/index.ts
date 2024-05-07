@@ -13,11 +13,16 @@ import Integration from './classes/integration';
  */
 export const handler = async (event: any, context: any): Promise<ProxyResult> => {
   const execution = new Integration(event, context);
-  await AutomationExecution.executeAutomation(execution);
+  await AutomationExecution.executeAutomation(execution,
+    'Automation executed with no errors!',
+    'Error!',
+    event.payload,
+  );
 
   if (execution.hasAnyErrors()) {
     throw Error('Error!');
   }
+
   return {
     statusCode: 200,
     body: 'Automation executed with no errors!',
