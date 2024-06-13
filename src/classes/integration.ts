@@ -4,7 +4,7 @@ import { TunnelHubSystem } from '@tunnelhub/sdk/src/types/data';
 import { IntegrationModel } from '../types';
 import metadata from '../metadata';
 
-export default class Integration extends NoDeltaIntegrationFlow {
+export default class Integration extends NoDeltaIntegrationFlow<IntegrationModel> {
   private readonly parameters: { custom: GenericParameter[] };
   private readonly systems: TunnelHubSystem[];
 
@@ -32,16 +32,7 @@ export default class Integration extends NoDeltaIntegrationFlow {
      *
      * The implementation of this method is mandatory
      */
-    return [
-      {
-        key_field: '1',
-        regular_field: 'anyString',
-      },
-      {
-        key_field: '2',
-        regular_field: 'anotherString',
-      },
-    ];
+    return [];
   }
 
   async sendData(item: IntegrationModel): Promise<IntegrationMessageReturn> {
