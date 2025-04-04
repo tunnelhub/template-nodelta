@@ -1,11 +1,15 @@
-import { NoDeltaIntegrationFlow } from '@tunnelhub/sdk/src/classes/flows/noDeltaIntegrationFlow';
-import { GenericParameter, IntegrationMessageReturn, Metadata } from '@tunnelhub/sdk';
-import { TunnelHubSystem } from '@tunnelhub/sdk/src/types/data';
-import { IntegrationModel } from '../types';
+import {
+  AutomatedIntegrationParameters,
+  IntegrationMessageReturn,
+  Metadata,
+  NoDeltaIntegrationFlow,
+  TunnelHubSystem,
+} from '@tunnelhub/sdk';
+import { IntegrationModel } from '../types/integration';
 import metadata from '../metadata';
 
 export default class Integration extends NoDeltaIntegrationFlow<IntegrationModel> {
-  private readonly parameters: { custom: GenericParameter[] };
+  private readonly parameters: AutomatedIntegrationParameters;
   private readonly systems: TunnelHubSystem[];
 
   constructor(event: any, context: any) {

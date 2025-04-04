@@ -1,33 +1,9 @@
-import Integration from '../../src/classes/integration';
-import { AutomationExecution } from '@tunnelhub/sdk';
-import AutomationLog from '@tunnelhub/sdk/src/classes/logs/automationLog';
-import { NoDeltaIntegrationFlow } from '@tunnelhub/sdk/src/classes/flows/noDeltaIntegrationFlow';
-import type { BatchWriteCommandOutput } from '@aws-sdk/lib-dynamodb';
+import Integration from '../../src/core/integration';
+import { SDK } from '@tunnelhub/sdk';
 
 describe('test src/integration', () => {
   beforeAll(() => {
-    /**
-     * The code below is mandatory to avoid TunnelHub SDK making external calls trying to persist logs
-     * You can make this mock using the same code with any IntegrationFlow at @tunnelhub/sdk/classes/flows
-     */
-    const persistLambdaContextFunc = jest.spyOn(AutomationExecution as any, 'persistLambdaContext');
-    persistLambdaContextFunc.mockImplementation(() => {
-    });
-
-    const persistLogsFunc = jest.spyOn(AutomationLog.prototype as any, 'save');
-    persistLogsFunc.mockImplementation(() => {
-    });
-
-    const persistLogsFuncBatch = jest.spyOn(AutomationLog, 'saveInDynamoDB');
-    persistLogsFuncBatch.mockResolvedValue({} as BatchWriteCommandOutput);
-
-    const updateExecutionStatisticsFunc = jest.spyOn(NoDeltaIntegrationFlow.prototype as any, 'updateExecutionStatistics');
-    updateExecutionStatisticsFunc.mockImplementation(() => {
-    });
-
-    const updateMetadata = jest.spyOn(NoDeltaIntegrationFlow.prototype as any, 'updateMetadata');
-    updateMetadata.mockImplementation(() => {
-    });
+    SDK.testMode = true;
   });
 
   test('successfully test', async () => {
