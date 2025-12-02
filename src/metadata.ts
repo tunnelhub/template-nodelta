@@ -1,4 +1,5 @@
 import { Metadata } from '@tunnelhub/sdk';
+import { IntegrationModel } from './types/integration';
 
 /**
  * Return all columns that will be visible on the monitoring screen.
@@ -17,4 +18,4 @@ export default [
     fieldLabel: 'Regular field',
     fieldType: 'TEXT',
   },
-] as Metadata[];
+] as Metadata<IntegrationModel>[];
